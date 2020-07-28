@@ -1,7 +1,8 @@
 ---
 home: true
+defaultHome: true
 # heroImage: /img/logo.jpeg
 actionText: 进入我的博客
 actionLink: /timeLine/
-subDescription: 一名爱技术、爱生活、爱思考的码农
+subDescription: 冲冲冲
 ---

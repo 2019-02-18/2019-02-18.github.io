@@ -1,7 +1,7 @@
 module.exports = {
     title: '刘志伟',
-
     serviceWorker: true,
+	theme: 'antdocs',
     head: [
         ['link', { rel: 'icon', href: '/img/logo.jpeg' }]
     ],
