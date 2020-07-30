@@ -3,16 +3,16 @@ module.exports = {
     serviceWorker: true,
 	theme: 'antdocs',
     head: [
-        ['link', { rel: 'icon', href: '/img/logo.jpeg' }]
+        ['link', { rel: 'icon', href: '/logo2.png' }]
     ],
     markdown: {
       // 显示代码行号
       lineNumbers: false
     },
     themeConfig: {
-        logo:"/img/logo.jpeg",
+        logo:"/logo2.png",
         nav: [
-          { text: '首页', link: '/timeLine/' },
+          { text: '首页', link: '/' },
           { text: '技术', link:'/technology/'},
           { text: '生活',link: '/life/' },
           { text: '思考',link: '/ponder/'},
@@ -25,6 +25,6 @@ module.exports = {
             ]
           }
         ],
-        lastUpdated: 'Last Updated', 
+        lastUpdated: 'Last Updated',
       }
   }
