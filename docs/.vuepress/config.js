@@ -13,12 +13,12 @@ module.exports = {
         logo:"/logo2.png",
         nav: [
           { text: '首页', link: '/' },
-          { text: '技术', link:'/technology/'},
+          { text: '技术', link: '/technology/'},
           { text: '生活',link: '/life/' },
           { text: '思考',link: '/ponder/'},
           { text: '标签库', link: '/tags/' },
-          { text: '关于', link:'/about/'},
-          { text: '留言板', link:'/massage/'},
+          { text: '关于', link: '/about/'},
+          { text: '留言板', link: '/massage/'},
           { text: '链接',
             items: [
                 {text:'GitHub',link: 'https://github.com/2019-02-18' },
