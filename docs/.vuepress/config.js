@@ -13,7 +13,12 @@ module.exports = {
         logo:"/logo2.png",
         nav: [
           { text: '首页', link: '/' },
-          { text: '技术', link: '/technology/'},
+          { text: '技术', items: [
+                  {text:'Vue',link:'/vue/'},
+                  {text:'Uniapp',link:'/uniapp/'},
+                  {text:'Git',link:'/git/'},
+                  {text:'Npm',link:'/npm/'}
+              ]},
           { text: '生活',link: '/life/' },
           { text: '思考',link: '/ponder/'},
           { text: '标签库', link: '/tags/' },

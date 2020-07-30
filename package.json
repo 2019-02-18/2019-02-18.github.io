@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "vue-particles": "^1.0.9",
     "vuepress": "^1.5.2"
   },
   "scripts": {
