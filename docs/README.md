@@ -7,3 +7,4 @@ actionLink: /about/
 ---
 <music />
 <particles />
+<Cat theme="dark" style="position:fixed;right:0;bottom:50px" />

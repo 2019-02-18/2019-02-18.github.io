@@ -2,6 +2,9 @@ module.exports = {
     title: '刘志伟',
     serviceWorker: true,
 	theme: 'antdocs',
+    plugins: [
+        "vuepress-plugin-live2d-cat",
+    ],
     head: [
         ['link', { rel: 'icon', href: '/logo2.png' }]
     ],

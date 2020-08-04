@@ -26,9 +26,8 @@ sidebar: auto
     Digest: sha256:2c33632ccd8f8c5f9023a3d7f5f541e271833e402219f8c5a83a29d1721457ca
     Status: Downloaded newer image for sonatype/nexus3:latest
     f637e039214978f8aac41e621e51588bd8cd8438055498c4060fbaf87799e64f
-###2.创建npm仓
+    
+###2.创建npm仓库
 ***
 打开`设置 -> repositories`页面，点击``
 ## 
-
-
