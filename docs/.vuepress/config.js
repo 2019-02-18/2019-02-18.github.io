@@ -3,7 +3,9 @@ module.exports = {
     serviceWorker: true,
 	theme: 'antdocs',
     plugins: [
-        "vuepress-plugin-live2d-cat",
+        "vuepress-plugin-live2d-cat",{
+
+        }
     ],
     head: [
         ['link', { rel: 'icon', href: '/logo2.png' }]
@@ -17,10 +19,11 @@ module.exports = {
         nav: [
           { text: '首页', link: '/' },
           { text: '技术', items: [
+                  {text:'Js',link:'/jsFunction/'},
                   {text:'Vue',link:'/vue/'},
                   {text:'Uniapp',link:'/uniapp/'},
                   {text:'Git',link:'/git/'},
-                  {text:'Npm',link:'/npm/'}
+                  {text:'Npm',link:'/npm/'},
               ]},
           { text: '生活',link: '/life/' },
           { text: '思考',link: '/ponder/'},
@@ -34,5 +37,7 @@ module.exports = {
           }
         ],
         lastUpdated: 'Last Updated',
-      }
+      },
+    sidebar: 'auto', // 侧边栏配置
+    sidebarDepth: 2, // 侧边栏显示2级
   }
