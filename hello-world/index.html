@@ -16,8 +16,10 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            cursor: pointer;
+            overflow: hidden;
         }
 
         .container {
@@ -25,7 +27,7 @@
             padding: 3rem 4rem;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
         h1 {
@@ -54,6 +56,64 @@
             font-size: 0.85rem;
             color: #999;
         }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particle-burst 0.8s ease-out forwards;
+        }
+
+        @keyframes particle-burst {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--dx), var(--dy)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .spark {
+            position: absolute;
+            pointer-events: none;
+            animation: spark-fly 1s ease-out forwards;
+        }
+
+        @keyframes spark-fly {
+            0% {
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .ripple {
+            position: absolute;
+            pointer-events: none;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: ripple-expand 0.9s ease-out forwards;
+        }
+
+        @keyframes ripple-expand {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 0.8;
+            }
+            100% {
+                width: 150px;
+                height: 150px;
+                opacity: 0;
+                margin-left: -75px;
+                margin-top: -75px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -61,27 +121,80 @@
         <div class="clock" id="clock"></div>
         <h1>Hello World</h1>
         <p>这是一个测试项目 — Multica 开发流程演示</p>
-        <p class="version">v1.0.0</p>
+        <p class="version">v1.1.0</p>
     </div>
     <script>
-        (function() {
-            var el = document.getElementById('clock');
-            var WEEKDAYS = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
-            function pad(n) { return n < 10 ? '0' + n : '' + n; }
-            function tick() {
-                var now = new Date();
-                var str = now.getFullYear() + '年'
-                    + (now.getMonth() + 1) + '月'
-                    + now.getDate() + '日'
-                    + ' ' + WEEKDAYS[now.getDay()]
-                    + ' ' + pad(now.getHours())
-                    + ':' + pad(now.getMinutes())
-                    + ':' + pad(now.getSeconds());
-                el.textContent = str;
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            document.getElementById('clock').textContent = timeStr;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // 鼠标点击粒子特效
+        const COLORS = [
+            '#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3',
+            '#54a0ff', '#5f27cd', '#01a3a4', '#f368e0',
+            '#ff6348', '#7bed9f', '#70a1ff', '#ffa502'
+        ];
+
+        document.body.addEventListener('click', function(e) {
+            // 波纹扩散效果
+            const ripple = document.createElement('span');
+            ripple.classList.add('ripple');
+            ripple.style.left = e.clientX + 'px';
+            ripple.style.top = e.clientY + 'px';
+            document.body.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 900);
+
+            // 产生 18 个彩色粒子向四周飞散
+            const count = 18;
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('span');
+                particle.classList.add('particle');
+                const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4;
+                const distance = 50 + Math.random() * 100;
+                const dx = Math.cos(angle) * distance;
+                const dy = Math.sin(angle) * distance;
+                const size = 3 + Math.random() * 10;
+                const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+
+                particle.style.width = particle.style.height = size + 'px';
+                particle.style.left = e.clientX + 'px';
+                particle.style.top = e.clientY + 'px';
+                particle.style.background = color;
+                particle.style.setProperty('--dx', dx + 'px');
+                particle.style.setProperty('--dy', dy + 'px');
+
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 800);
             }
-            tick();
-            setInterval(tick, 1000);
-        })();
+
+            // 中心闪点
+            const spark = document.createElement('span');
+            spark.classList.add('spark');
+            spark.style.left = e.clientX + 'px';
+            spark.style.top = e.clientY + 'px';
+            spark.style.width = '24px';
+            spark.style.height = '24px';
+            spark.style.background = 'radial-gradient(circle, #fff 0%, rgba(255,255,255,0) 70%)';
+            spark.style.borderRadius = '50%';
+            spark.style.setProperty('--dx', (Math.random() - 0.5) * 30 + 'px');
+            spark.style.setProperty('--dy', (Math.random() - 0.5) * 30 + 'px');
+            spark.style.setProperty('--rot', (Math.random() * 360) + 'deg');
+
+            document.body.appendChild(spark);
+            setTimeout(() => spark.remove(), 1000);
+        });
     </script>
 </body>
 </html>
