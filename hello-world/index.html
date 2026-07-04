@@ -40,6 +40,15 @@
             color: #666;
         }
 
+        .clock {
+            font-size: 1.6rem;
+            color: #444;
+            margin-bottom: 1.5rem;
+            font-variant-numeric: tabular-nums;
+            font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+            letter-spacing: 2px;
+        }
+
         .version {
             margin-top: 2rem;
             font-size: 0.85rem;
@@ -49,9 +58,30 @@
 </head>
 <body>
     <div class="container">
+        <div class="clock" id="clock"></div>
         <h1>Hello World</h1>
         <p>这是一个测试项目 — Multica 开发流程演示</p>
         <p class="version">v1.0.0</p>
     </div>
+    <script>
+        (function() {
+            var el = document.getElementById('clock');
+            var WEEKDAYS = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+            function pad(n) { return n < 10 ? '0' + n : '' + n; }
+            function tick() {
+                var now = new Date();
+                var str = now.getFullYear() + '年'
+                    + (now.getMonth() + 1) + '月'
+                    + now.getDate() + '日'
+                    + ' ' + WEEKDAYS[now.getDay()]
+                    + ' ' + pad(now.getHours())
+                    + ':' + pad(now.getMinutes())
+                    + ':' + pad(now.getSeconds());
+                el.textContent = str;
+            }
+            tick();
+            setInterval(tick, 1000);
+        })();
+    </script>
 </body>
 </html>
