@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .card-wrapper {
+            position: relative;
+            border-radius: 20px;
+            padding: 5px;
+        }
+
+        .card-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 22px;
+            background: conic-gradient(
+                from 0deg,
+                #ff00e6,
+                #00fff0,
+                #7c3aed,
+                #00d4ff,
+                #ff6b35,
+                #ff00e6
+            );
+            animation: border-spin 3s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes border-spin {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 3rem 4rem;
+            background: rgba(15, 12, 41, 0.92);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            color: #f0f0ff;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #a0a0c0;
+        }
+
+        .clock {
+            font-size: 1.6rem;
+            color: #c0c0e0;
+            margin-bottom: 1.5rem;
+            font-variant-numeric: tabular-nums;
+            font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+            letter-spacing: 2px;
+        }
+
+        .version {
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            color: #6060a0;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particle-burst 0.8s ease-out forwards;
+        }
+
+        @keyframes particle-burst {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--dx), var(--dy)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .spark {
+            position: absolute;
+            pointer-events: none;
+            animation: spark-fly 1s ease-out forwards;
+        }
+
+        @keyframes spark-fly {
+            0% {
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .ripple {
+            position: absolute;
+            pointer-events: none;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: ripple-expand 0.9s ease-out forwards;
+        }
+
+        @keyframes ripple-expand {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 0.8;
+            }
+            100% {
+                width: 150px;
+                height: 150px;
+                opacity: 0;
+                margin-left: -75px;
+                margin-top: -75px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card-wrapper">
+        <div class="container">
+            <div class="clock" id="clock"></div>
+            <h1>Hello World</h1>
+            <p>这是一个测试项目 — Multica 开发流程演示</p>
+            <p class="version">v1.1.0</p>
+        </div>
+    </div>
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            document.getElementById('clock').textContent = timeStr;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // 鼠标点击粒子特效
+        const COLORS = [
+            '#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3',
+            '#54a0ff', '#5f27cd', '#01a3a4', '#f368e0',
+            '#ff6348', '#7bed9f', '#70a1ff', '#ffa502'
+        ];
+
+        document.body.addEventListener('click', function(e) {
+            // 波纹扩散效果
+            const ripple = document.createElement('span');
+            ripple.classList.add('ripple');
+            ripple.style.left = e.clientX + 'px';
+            ripple.style.top = e.clientY + 'px';
+            document.body.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 900);
+
+            // 产生 18 个彩色粒子向四周飞散
+            const count = 18;
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('span');
+                particle.classList.add('particle');
+                const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4;
+                const distance = 50 + Math.random() * 100;
+                const dx = Math.cos(angle) * distance;
+                const dy = Math.sin(angle) * distance;
+                const size = 3 + Math.random() * 10;
+                const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+
+                particle.style.width = particle.style.height = size + 'px';
+                particle.style.left = e.clientX + 'px';
+                particle.style.top = e.clientY + 'px';
+                particle.style.background = color;
+                particle.style.setProperty('--dx', dx + 'px');
+                particle.style.setProperty('--dy', dy + 'px');
+
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 800);
+            }
+
+            // 中心闪点
+            const spark = document.createElement('span');
+            spark.classList.add('spark');
+            spark.style.left = e.clientX + 'px';
+            spark.style.top = e.clientY + 'px';
+            spark.style.width = '24px';
+            spark.style.height = '24px';
+            spark.style.background = 'radial-gradient(circle, #fff 0%, rgba(255,255,255,0) 70%)';
+            spark.style.borderRadius = '50%';
+            spark.style.setProperty('--dx', (Math.random() - 0.5) * 30 + 'px');
+            spark.style.setProperty('--dy', (Math.random() - 0.5) * 30 + 'px');
+            spark.style.setProperty('--rot', (Math.random() * 360) + 'deg');
+
+            document.body.appendChild(spark);
+            setTimeout(() => spark.remove(), 1000);
+        });
+    </script>
+</body>
+</html>
